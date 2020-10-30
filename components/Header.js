@@ -11,6 +11,7 @@
 // Use your function to create a header
 // and append it to the DOM inside the div.header-container
 
+
 function Header() {
     const header = document.createElement('div');
     const date = document.createElement('span');
@@ -21,11 +22,12 @@ function Header() {
     date.classList.add('date');
     temp.classList.add('temp');
 
-    date.textContent = 'MARCH 28, 2020'; // get current date 
-    title.textContent = 'Lambda Times';
-    temp.textContent = '98'; // can I get the current temp?
+    const currentDate = (new Date()).toString().split(' ').filter((e, i) => (i === 1 || i === 2 || i === 3));
 
-    //hierarchy
+    date.innerHTML = `${currentDate[0].toUpperCase()} ${currentDate[1]}, ${currentDate[2]}`; 
+    title.textContent = 'Lambda Times';
+    temp.textContent = '98' + String.fromCharCode(176); 
+
     header.appendChild(date);
     header.appendChild(title);
     header.appendChild(temp);

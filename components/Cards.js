@@ -22,17 +22,41 @@
 // Use your function to create a card for each of the articles, and append each card to the DOM.
 
 import axios from 'axios';
+let topicFilter = null;
 
 axios
 .get('https://lambda-times-api.herokuapp.com/articles')
 .then(res => {
     const articles = res.data.articles
+    
     for(const genre in articles){
-        articles[genre].forEach(article => {
-            document.querySelector('.cards-container').appendChild(getCard(article));
-        });
-    }
+        articles[genre].forEach(article => 
+            document.querySelector('.cards-container').appendChild(getCard(article)));
+    } 
+
+    window.addEventListener('click', event => {
+        topicFilter = event.target.innerHTML;
+        if(topicFilter === 'node.js')
+            topicFilter = 'node';
+        console.log(topicFilter);
+
+        const numberOfArticles = document.querySelector('.cards-container').childElementCount;
+
+        if(event.target.className === 'tab'){
+            for(let i = 0; i < numberOfArticles; i++){
+                document.querySelector('.cards-container').removeChild(document.querySelector('.card'));
+            }        
+            
+            articles[topicFilter].forEach(article => {
+                document.querySelector('.cards-container').appendChild(getCard(article));
+            });
+
+        }
+    });
 });
+
+
+
 
 function getCard(data) {
     const card = document.createElement('div');
@@ -56,7 +80,6 @@ function getCard(data) {
         author.appendChild(imgContainer);
             imgContainer.appendChild(img);
         author.appendChild(authorName);
-
 
     card.addEventListener('click', () => console.log(data.headline));
 
